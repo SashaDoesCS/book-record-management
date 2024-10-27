@@ -1,6 +1,3 @@
-'''Includes user input for insertion, look up, deletion and displaying. Uses linked lists for separate chaining to check for collision.
-I've already tested it, but sample data is included so you can test further if necessary.
-'''
 class Node:
     def __init__(self, isbn, title):
         self.isbn = isbn
@@ -140,3 +137,22 @@ def main():
             print("Invalid option. Please try again.")
 
 main()
+
+'''
+Testing done on a separate file.
+
+Testing with 10 records:
+Insertion time for 10 records: 0.000142 seconds
+Lookup time for 10 records: 0.000053 seconds
+Deletion time for 10 records: 0.000045 seconds
+
+Testing with 100 records:
+Insertion time for 100 records: 0.000386 seconds
+Lookup time for 100 records: 0.002367 seconds
+Deletion time for 100 records: 0.001538 seconds
+
+Testing with 1000 records:
+Insertion time for 1000 records: 0.004878 seconds
+Lookup time for 1000 records: 0.265458 seconds
+Deletion time for 1000 records: 0.162941 seconds
+'''
