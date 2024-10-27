@@ -1,13 +1,6 @@
 import random
 import string
-import time #needs to be implemented in here
-
-'''Since we need to:
-Test the hash table with 10, 100, and 1000 records.
-Measure and comment on the time performance for lookup, insertion, and deletion operations.
-
-I thought it would be easier to separate the testing from the main one with user input. Once the performance is tested, it can be added into the comments on the main.py file
-'''
+import time
 
 class Node:
     def __init__(self, isbn, title):
@@ -79,22 +72,67 @@ class HashTable:
                 print("None")
 
 def generate_isbn():
-    # Generate a random ISBN for testing
     return ''.join(random.choices(string.digits, k=13))
+
+def measure_insertion_time(size):
+    hash_table = HashTable(size)
+    start_time = time.time()
+
+    for _ in range(size):
+        isbn = generate_isbn()
+        title = f"Book {isbn[-1]}"
+        hash_table.insert(isbn, title)
+
+    end_time = time.time()
+    print(f"Insertion time for {size} records: {end_time - start_time:.6f} seconds")
+
+def measure_lookup_time(size):
+    hash_table = HashTable(size)
+    
+    for _ in range(size):
+        isbn = generate_isbn()
+        title = f"Book {isbn[-1]}"
+        hash_table.insert(isbn, title)
+
+    start_time = time.time()
+
+    for _ in range(size):
+        isbn = random.choice([node.isbn for index in range(hash_table.size) if hash_table.table[index] for node in iterate_nodes(hash_table.table[index])])
+        hash_table.lookup(isbn)
+
+    end_time = time.time()
+    print(f"Lookup time for {size} records: {end_time - start_time:.6f} seconds")
+
+def iterate_nodes(node):
+    while node:
+        yield node
+        node = node.next
+
+def measure_deletion_time(size):
+    hash_table = HashTable(size)
+    
+    for _ in range(size):
+        isbn = generate_isbn()
+        title = f"Book {isbn[-1]}"
+        hash_table.insert(isbn, title)
+
+    start_time = time.time()
+
+    for index in range(size):
+        isbn = random.choice([node.isbn for index in range(hash_table.size) if hash_table.table[index] for node in iterate_nodes(hash_table.table[index])])
+        hash_table.delete(isbn)
+
+    end_time = time.time()
+    print(f"Deletion time for {size} records: {end_time - start_time:.6f} seconds")
 
 def main():
     sizes = [10, 100, 1000]
-    
+
     for size in sizes:
         print(f"\nTesting with {size} records:")
-        hash_table = HashTable(size)
-
-        for _ in range(size):
-            isbn = generate_isbn()
-            title = f"Book {isbn[-1]}"  # Simple title using last digit of ISBN
-            hash_table.insert(isbn, title)
-
-        hash_table.display()
+        measure_insertion_time(size)
+        measure_lookup_time(size)
+        measure_deletion_time(size)
 
 if __name__ == "__main__":
     main()
